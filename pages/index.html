@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Latest Email Viewer</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; max-width: 800px; margin: auto; }
+    .email { border: 1px solid #ccc; padding: 10px; background: #f9f9f9; }
+  </style>
+</head>
+<body>
+  <h1>Latest Email for rsveqry974@1secmail.website</h1>
+  <div id="email" class="email">Loading latest email...</div>
+
+  <script>
+    const login = 'rsveqry974';
+    const domain = '1secmail.website';
+
+    async function fetchLatestEmail() {
+      try {
+        const inboxRes = await fetch(`https://www.1secmail.com/api/v1/?action=getMessages&login=${login}&domain=${domain}`);
+        const inbox = await inboxRes.json();
+
+        if (inbox.length === 0) {
+          document.getElementById('email').innerText = 'No emails received yet.';
+          return;
+        }
+
+        const latestEmail = inbox[0];
+        const emailId = latestEmail.id;
+
+        const emailRes = await fetch(`https://www.1secmail.com/api/v1/?action=readMessage&login=${login}&domain=${domain}&id=${emailId}`);
+        const email = await emailRes.json();
+
+        document.getElementById('email').innerHTML = `
+          <h2>${email.subject}</h2>
+          <p><strong>From:</strong> ${email.from}</p>
+          <p><strong>Date:</strong> ${email.date}</p>
+          <hr>
+          <div style="white-space: pre-wrap;">${email.body}</div>
+        `;
+      } catch (err) {
+        console.error(err);
+        document.getElementById('email').innerText = 'Error loading email.';
+      }
+    }
+
+    fetchLatestEmail();
+    setInterval(fetchLatestEmail, 5000); // Refresh every 5 seconds
+  </script>
+</body>
+</html>
