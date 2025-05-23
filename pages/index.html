@@ -9,16 +9,17 @@
   </style>
 </head>
 <body>
-  <h1>Latest Email for rsveqry974@1secmail.website</h1>
+  <h1>Latest Email for rsveqry974@1secmail.cc</h1>
   <div id="email" class="email">Loading latest email...</div>
 
   <script>
     const login = 'rsveqry974';
-    const domain = '1secmail.website';
+    const domain = '1secmail.cc';
+    const base = 'https://www.1secmail.cc/api/v1/';
 
     async function fetchLatestEmail() {
       try {
-        const inboxRes = await fetch(`https://www.1secmail.com/api/v1/?action=getMessages&login=${login}&domain=${domain}`);
+        const inboxRes = await fetch(`${base}?action=getMessages&login=${login}&domain=${domain}`);
         const inbox = await inboxRes.json();
 
         if (inbox.length === 0) {
@@ -29,7 +30,7 @@
         const latestEmail = inbox[0];
         const emailId = latestEmail.id;
 
-        const emailRes = await fetch(`https://www.1secmail.com/api/v1/?action=readMessage&login=${login}&domain=${domain}&id=${emailId}`);
+        const emailRes = await fetch(`${base}?action=readMessage&login=${login}&domain=${domain}&id=${emailId}`);
         const email = await emailRes.json();
 
         document.getElementById('email').innerHTML = `
